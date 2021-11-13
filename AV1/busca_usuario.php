@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $nomeArquivo = "usuario.txt";
-$arquivoAluno = fopen($nomeArquivo, "r") or die("Erro leitura arquivo");
+$arquivo = fopen($nomeArquivo, "r") or die("Erro leitura arquivo");
 $cabecalho = fgets($arquivoAluno);
 while (!feof($arquivoAluno)) {
     $linha[] = fgets($arquivoAluno);
@@ -31,10 +31,6 @@ fclose($arquivoAluno);
 <a href="altera_usuario.php">Alterar Usuário</a><br>
 <a href="exclui_usuario.php">Excluir Usuário</a><br>
 
-
-<a href="ex4_altAluno.php">Alterar Aluno</a><br>
-<a href="ex4_excluirAluno.php">Excluir Aluno</a><br><br>
-
 <h1>Buscar Usuário</h1>
 
 <form action="busca_usuario.php" method="POST">
@@ -47,15 +43,16 @@ fclose($arquivoAluno);
 <?php
     if ($ehPost) {
         echo "<table><tr><th>Nome</th><th>Matricula</th><th>Função</th></tr>";
-        foreach($linha as $usuario) {
-            list($nomeLinha,$matriculaLinha,$funcaoLinha) = explode(";",$usuario);
-            if (($nome == $nomeLinha) || ($matricula == $matriculaLinha) || ($funcao == $funcaoLinha)){
-                
-                echo "<tr>";
-                echo "<td>$nomeLinha</td>";
-                echo "<td>$matriculaLinha</td>";
-                echo "<td>$funcaoLinha</td>";
-                echo "</tr>";
+        if (isset($linha)) {
+            foreach($linha as $usuario) {
+                list($nomeLinha, $matriculaLinha, $funcaoLinha) = explode(";", $usuario);
+                if (($nome == $nomeLinha) || ($matricula == $matriculaLinha) || ($funcao == $funcaoLinha)) {
+                    echo "<tr>";
+                    echo "<td>$nomeLinha</td>";
+                    echo "<td>$matriculaLinha</td>";
+                    echo "<td>$funcaoLinha</td>";
+                    echo "</tr>";
+                }
             }
         }
     }

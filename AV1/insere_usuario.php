@@ -30,10 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <a href="altera_usuario.php">Alterar Usuário</a><br>
 <a href="exclui_usuario.php">Excluir Usuário</a><br>
 
-
-<a href="ex4_altAluno.php">Alterar Aluno</a><br>
-<a href="ex4_excluirAluno.php">Excluir Aluno</a><br><br>
-
 <h1>Inserir Usuário</h1>
 
 <h3><?php if ($ehPost) {echo "Usuário $nome inserido com sucesso";} ?></h3>

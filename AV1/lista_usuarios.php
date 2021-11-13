@@ -7,12 +7,12 @@
 <body>
 <?php
 $nomeArquivo = "usuario.txt";
-$arquivoAluno = fopen($nomeArquivo, "r") or die("Erro leitura arquivo");
-$cabecalho = fgets($arquivoAluno);
-while (!feof($arquivoAluno)) {
-    $linha[] = fgets($arquivoAluno);
+$arquivo = fopen($nomeArquivo, "r") or die("Erro leitura arquivo");
+$cabecalho = fgets($arquivo);
+while (!feof($arquivo)) {
+    $linha[] = fgets($arquivo);
 }
-fclose($arquivoAluno);
+fclose($arquivo);
 
 ?>
 <a href="insere_usuario.php">Inserir Usuário</a><br>
@@ -31,13 +31,17 @@ fclose($arquivoAluno);
         <th>Função</th>
     </tr>
 <?php
-    foreach($linha as $usuario) {
-        list($nome,$matricula,$funcao) = explode(";",$usuario);
-        echo "<tr>";
-        echo "<td>$nome</td>";
-        echo "<td>$matricula</td>";
-        echo "<td>$funcao</td>";
-        echo "</tr>";
+    if (isset($linha)) {
+        foreach ($linha as $usuario) {
+            if($usuario) {
+                list($nome, $matricula, $funcao) = explode(";", $usuario);
+                echo "<tr>";
+                echo "<td>$nome</td>";
+                echo "<td>$matricula</td>";
+                echo "<td>$funcao</td>";
+                echo "</tr>";
+            }
+        }
     }
     ?>
 </table>
