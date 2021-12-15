@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AV2</title>
+	<script>
+	function ValidaStr(str) {
+		if (str == "") {
+            return false;
+		}
+		return true;
+	}
+	
+	function ValidaQtdAssentos(qtd) {
+		if (qtd != 23 || qtd != 28 || qtd != 32) {
+			return false;
+		}
+		return true;
+	}
+	
+	function ValidaBool(str) {
+		if (str != "S" || str != "s" || str != "N" || str != "n"){
+			return false;
+		}
+		return true;
+	}
+	
+	
+	function ValidarForm() {
+		let objForm = document.getElementById("cadOnibus");
+		console.log("objForm: " + objForm.innerHTML);
+		
+		let strChassis = document.getElementById("chassis").value;
+		let strMarca = document.getElementById("marca").value;
+		let strModelo = document.getElementById("modelo").value;
+		let strPlaca = document.getElementById("placa").value;
+		let strQtdAssentos = document.getElementById("qtdAssentos").value;
+		let strTemArCondicionado = document.getElementById("temArCondicionado").value;
+		let strTemBanheiro = document.getElementById("temBanheiro").value;
+		
+		console.log("chassis:" + strChassis + "  marca: " + strMarca + "  modelo:" + strModelo + "  placa: " + strPlaca + "  qtdAssentos: " + strQtdAssentos + "  temArCondicionado: " + strTemArCondicionado + "  temBanheiro: " + strTemBanheiro);
+		msgErro = "";
+		
+		if (!ValidaStr(strChassis)) {
+            msgErro += "Chassis não pode ser vazio. <br>";
+        }
+		if (!ValidaStr(strMarca)) {
+            msgErro += "Marca não pode ser vazio. <br>";
+        }
+		if (!ValidaStr(strModelo)) {
+            msgErro += "Modelo não pode ser vazio. <br>";
+        }
+		if (!ValidaStr(strPlaca)) {
+            msgErro += "Placa não pode ser vazio. <br>";
+        }
+		if (!ValidaQtdAssentos(strQtdAssentos)) {
+            msgErro += "Quantidade de assentos inválida. <br>";
+        }
+		if (!ValidaBool(strTemArCondicionado) || !ValidaBool(strTemBanheiro)) {
+			msgErro += "Tem banheiro ou Ar condicionado. Opção incorreta (S ou N). <br>";
+		}
+		
+		if (msgErro == "") {
+            EnviarForm();
+        }
+		document.getElementById("msg").innerHTML = msgErro;
+    }
+	</script>
+    
+</head>
+<body>
+<a href="inserir.html">Inserir</a><br>
+<a href="listar.html">Listar</a><br>
+
+
+<h1>Inserir</h1>
+<form action="" id="cadOnibus" >
+	chassis: <input type="text" name="chassis" id="chassis"><br>
+	marca: <input type="text" name="marca" id="marca"><br> 
+	modelo: <input type="text" name="modelo" id="modelo"><br>
+	placa: <input type="text" name="placa" id="placa"><br>
+	qtdAssentos: <input type="text" name="qtdAssentos" id="qtdAssentos"><br>
+	temArCondicionado: <input type="text" name="temArCondicionado" id="temArCondicionado"><br>
+	temBanheiro: <input type="text" name="temBanheiro" id="temBanheiro"><br>
+
+    <input type="button" value="enviar" onclick="ValidarForm()">
+</form>
+
+<p id="msg"></p>
+
+</body>
+</html>
