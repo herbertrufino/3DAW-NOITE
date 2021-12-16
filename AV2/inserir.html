@@ -1,87 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>AV2</title>
-	<script>
-	function ValidaStr(str) {
-		if (str == "") {
-            return false;
-		}
-		return true;
-	}
-	
-	function ValidaQtdAssentos(qtd) {
-		if (qtd != 23 || qtd != 28 || qtd != 32) {
-			return false;
-		}
-		return true;
-	}
-	
-	function ValidaBool(str) {
-		if (str != "S" || str != "s" || str != "N" || str != "n"){
-			return false;
-		}
-		return true;
-	}
-	
-	
-	function ValidarForm() {
-		let objForm = document.getElementById("cadOnibus");
-		console.log("objForm: " + objForm.innerHTML);
-		
-		let strChassis = document.getElementById("chassis").value;
-		let strMarca = document.getElementById("marca").value;
-		let strModelo = document.getElementById("modelo").value;
-		let strPlaca = document.getElementById("placa").value;
-		let strQtdAssentos = document.getElementById("qtdAssentos").value;
-		let strTemArCondicionado = document.getElementById("temArCondicionado").value;
-		let strTemBanheiro = document.getElementById("temBanheiro").value;
-		
-		console.log("chassis:" + strChassis + "  marca: " + strMarca + "  modelo:" + strModelo + "  placa: " + strPlaca + "  qtdAssentos: " + strQtdAssentos + "  temArCondicionado: " + strTemArCondicionado + "  temBanheiro: " + strTemBanheiro);
-		msgErro = "";
-		
-		if (!ValidaStr(strChassis)) {
-            msgErro += "Chassis não pode ser vazio. <br>";
+    <script>
+        function ValidaStr(str) {
+            if (str == "") {
+                return false;
+            }
+            return true;
         }
-		if (!ValidaStr(strMarca)) {
-            msgErro += "Marca não pode ser vazio. <br>";
+
+        function ValidaQtdAssentos(qtd) {
+            if (qtd != 23 || qtd != 28 || qtd != 32) {
+                return false;
+            }
+            return true;
         }
-		if (!ValidaStr(strModelo)) {
-            msgErro += "Modelo não pode ser vazio. <br>";
+
+        function ValidaRadio(elements) {
+            let cont = 0;
+            for (var i = 0, l = elements.length; i < l; i++) {
+                if (elements[i].checked) {
+                    cont++;
+                }
+            }
+
+            if (cont == 0) {
+                return false;
+            }
+
+            return true;
         }
-		if (!ValidaStr(strPlaca)) {
-            msgErro += "Placa não pode ser vazio. <br>";
+
+        function RadioValue(elements) {
+            for (var i = 0, l = elements.length; i < l; i++) {
+                if (elements[i].checked) {
+                    return elements[i].value;
+                }
+            }
         }
-		if (!ValidaQtdAssentos(strQtdAssentos)) {
-            msgErro += "Quantidade de assentos inválida. <br>";
+
+
+        function ValidarForm() {
+            let objForm = document.getElementById("cadOnibus");
+            console.log("objForm: " + objForm.innerHTML);
+
+            let strChassis = document.getElementById("chassis").value;
+            let strMarca = document.getElementById("marca").value;
+            let strModelo = document.getElementById("modelo").value;
+            let strPlaca = document.getElementById("placa").value;
+            let arrQtdAssentos = document.getElementsByName("qtdAssentos");
+            let arrTemArCondicionado = document.getElementsByName("temArCondicionado");
+            let arrTemBanheiro = document.getElementsByName("temBanheiro");
+            let strQtdAssentos;
+            let strTemArCondicionado;
+            let strTemBanheiro;
+
+            //console.log("chassis:" + strChassis + "  marca: " + strMarca + "  modelo:" + strModelo + "  placa: " + strPlaca + "  qtdAssentos: " + strQtdAssentos + "  temArCondicionado: " + strTemArCondicionado + "  temBanheiro: " + strTemBanheiro);
+            msgErro = "";
+
+            if (!ValidaStr(strChassis)) {
+                msgErro += "Chassis não pode ser vazio. <br>";
+            }
+            if (!ValidaStr(strMarca)) {
+                msgErro += "Marca não pode ser vazio. <br>";
+            }
+            if (!ValidaStr(strModelo)) {
+                msgErro += "Modelo não pode ser vazio. <br>";
+            }
+            if (!ValidaStr(strPlaca)) {
+                msgErro += "Placa não pode ser vazio. <br>";
+            }
+            if (!ValidaRadio(arrQtdAssentos)) {
+                msgErro += "Selecione a quantidade de assentos. <br>";
+            } else {
+                strQtdAssentos = RadioValue(arrQtdAssentos);
+            }
+            if (!ValidaRadio(arrTemArCondicionado)) {
+                msgErro += "Selecione se tem Ar-condicionado. <br>";
+            } else {
+                strTemArCondicionado = RadioValue(arrTemArCondicionado);
+            }
+            if (!ValidaRadio(arrTemBanheiro)) {
+                msgErro += "Selecione se tem banheiro. <br>";
+            } else {
+                strTemBanheiro = RadioValue(arrTemBanheiro);
+            }
+
+            console.log("chassis:" + strChassis + "  marca: " + strMarca + "  modelo:" + strModelo + "  placa: " + strPlaca + "  qtdAssentos: " + strQtdAssentos + "  temArCondicionado: " + strTemArCondicionado + "  temBanheiro: " + strTemBanheiro);
+
+            if (msgErro == "") {
+                EnviarForm(strChassis, strMarca, strModelo, strPlaca, strQtdAssentos, strTemArCondicionado, strTemBanheiro);
+            }
+            document.getElementById("msg").innerHTML = msgErro;
         }
-		if (!ValidaBool(strTemArCondicionado) || !ValidaBool(strTemBanheiro)) {
-			msgErro += "Tem banheiro ou Ar condicionado. Opção incorreta (S ou N). <br>";
-		}
-		
-		if (msgErro == "") {
-            EnviarForm();
+
+        function EnviarForm(strChassis, strMarca, strModelo, strPlaca, strQtdAssentos, strTemArCondicionado, strTemBanheiro) {
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Chegou resposta: " + this.responseText)
+                    document.getElementById("msg").innerHTML = this.responseText;
+                }
+            }
+            xmlHttp.open("GET", "http://localhost/3daw/av2/inserir.php?chassis=" + strChassis +
+                "&marca=" + strMarca + "&modelo=" + strModelo + "&placa=" + strPlaca +
+                "&qtdAssentos=" + strQtdAssentos + "&temArCondicionado=" + strTemArCondicionado +
+                "&temBanheiro=" + strTemBanheiro);
+
+            xmlHttp.send();
+            console.log("Enviei requisição");
         }
-		document.getElementById("msg").innerHTML = msgErro;
-    }
-	</script>
-    
+    </script>
+
 </head>
 <body>
 <a href="inserir.html">Inserir</a><br>
 <a href="listar.html">Listar</a><br>
+<a href="alterar.html">Alterar</a><br>
 
 
 <h1>Inserir</h1>
 <form action="" id="cadOnibus" >
-	chassis: <input type="text" name="chassis" id="chassis"><br>
-	marca: <input type="text" name="marca" id="marca"><br> 
-	modelo: <input type="text" name="modelo" id="modelo"><br>
-	placa: <input type="text" name="placa" id="placa"><br>
-	qtdAssentos: <input type="text" name="qtdAssentos" id="qtdAssentos"><br>
-	temArCondicionado: <input type="text" name="temArCondicionado" id="temArCondicionado"><br>
-	temBanheiro: <input type="text" name="temBanheiro" id="temBanheiro"><br>
+    chassis: <input type="text" name="chassis" id="chassis"><br>
+    marca: <input type="text" name="marca" id="marca"><br>
+    modelo: <input type="text" name="modelo" id="modelo"><br>
+    placa: <input type="text" name="placa" id="placa"><br>
+    Quantidade de assentos:
+    <input type="radio" name="qtdAssentos" id="23" value="23">
+    <label for="23">23</label>
+    <input type="radio" name="qtdAssentos" id="28" value="28">
+    <label for="28">28</label>
+    <input type="radio" name="qtdAssentos" id="32" value="32">
+    <label for="32">32</label> <br>
+    Tem Ar-condicionado:
+    <input type="radio" name="temArCondicionado" id="sim" value="sim">
+    <label for="sim">Sim</label>
+    <input type="radio" name="temArCondicionado" id="nao" value="nao">
+    <label for="nao">Não</label><br>
+    Tem banheiro:
+    <input type="radio" name="temBanheiro" id="sim" value="sim">
+    <label for="sim">Sim</label>
+    <input type="radio" name="temBanheiro" id="nao" value="nao">
+    <label for="nao">Não</label><br>
 
     <input type="button" value="enviar" onclick="ValidarForm()">
 </form>
