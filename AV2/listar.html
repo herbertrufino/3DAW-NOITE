@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>AV2</title>
+    <script>
+        function buscarTodos() {
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Chegou resposta: " + this.responseText)
+                    let obj = JSON.parse(this.responseText);
+                    for (i=0; i < obj.length; i++) {
+                        let linha = obj[i];
+                        criarLinhaTabela(linha);
+                    }
+                }
+            }
+            xmlHttp.open("GET", "http://localhost/3daw/av2/listar.php");
+            xmlHttp.send();
+            console.log("Enviei requisição");
+        }
+        function criarLinhaTabela(pobjReturnJSON) {
+            let tr = document.createElement("tr");
+            let td = document.createElement("td");
+            let textnode = document.createTextNode(pobjReturnJSON.id);
+            td.appendChild(textnode);
+            tr.appendChild(td);
+
+            let td2 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.chassis);
+            td2.appendChild(textnode);
+            tr.appendChild(td2);
+
+            let td3 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.marca);
+            td3.appendChild(textnode);
+            tr.appendChild(td3);
+
+            let td4 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.modelo);
+            td4.appendChild(textnode);
+            tr.appendChild(td4);
+
+            let td5 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.placa);
+            td5.appendChild(textnode);
+            tr.appendChild(td5);
+
+            let td6 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.qtdAssentos);
+            td6.appendChild(textnode);
+            tr.appendChild(td6);
+
+            let td7 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.temArCondicionado);
+            td7.appendChild(textnode);
+            tr.appendChild(td7);
+
+            let td8 = document.createElement("td");
+            textnode = document.createTextNode(pobjReturnJSON.temBanheiro);
+            td8.appendChild(textnode);
+            tr.appendChild(td8);
+
+            let tr_fim = document.getElementById("ultimaLinha");
+            tr_fim.parentNode.insertBefore(tr, tr_fim);
+        }
+    </script>
+</head>
+<body>
+<a href="inserir.html">Inserir</a><br>
+<a href="listar.html">Listar</a><br>
+<a href="alterar.html">Alterar</a><br>
+
+
+<h1>Listar</h1>
+<input type="button" value="Listar Todos" onclick="buscarTodos()">
+<table id="tab">
+    <tr>
+        <th>id</th>
+        <th>Chassis</th>
+        <th>marca</th>
+        <th>modelo</th>
+        <th>placa</th>
+        <th>Assentos</th>
+        <th>Ar Condicionado</th>
+        <th>Banheiro</th>
+    </tr>
+    <tr id="ultimaLinha">
+        <td colspan="5"></td>
+    </tr>
+</table>
+
+<table>
+
+</table>
+</body>
+</html>
